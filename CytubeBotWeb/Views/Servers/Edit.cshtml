@@ -1,0 +1,78 @@
+﻿@model CytubeBotWeb.ViewModels.ServerChannelViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Server</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Server.Id" />
+            <div class="form-group">
+                <label asp-for="Server.Host" class="control-label"></label>
+                <input asp-for="Server.Host" class="form-control" />
+                <span asp-validation-for="Server.Host" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Server.Username" class="control-label"></label>
+                <input asp-for="Server.Username" class="form-control" />
+                <span asp-validation-for="Server.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Server.Password" class="control-label"></label>
+                <input asp-for="Server.Password" class="form-control" />
+                <span asp-validation-for="Server.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h3>Channels</h3>
+        <table class="table">
+            @foreach (var item in Model.Channels) {
+            <tr>
+                <td>@item.ChannelName</td>
+                <td>
+                    <div class="btn-group float-right">
+                        <a asp-action="Edit" asp-controller="Channels" asp-route-id="@item.Id" class="btn btn-sm btn-warning mr-2"><i class="fas fa-pencil-alt"></i></a>
+                        <form asp-action="Delete" asp-controller="Channels">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            }
+        </table>
+        <form class="form" asp-controller="Channels" asp-action="Create">
+            <div class="form-row">
+                <div class="col">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Channel.ServerModelId" value="@Model.Server.Id" />
+                    <div class="form-group">
+                        <input asp-for="Channel.ChannelName" placeholder="Channel name" class="form-control" />
+                        <span asp-validation-for="Channel.ChannelName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <input type="submit" value="Add channel" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

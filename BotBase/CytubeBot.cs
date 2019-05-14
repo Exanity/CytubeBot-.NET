@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace CytubeBotCore
 {
-    class CytubeBot
+    public class CytubeBot
     {
         public string Server;
         public int Port;
@@ -43,6 +43,12 @@ namespace CytubeBotCore
             websocket.EnableAutoSendPing = true;
             websocket.AutoSendPingInterval = 25;
             websocket.Open();
+        }
+
+        public void Disconnect()
+        {
+            websocket.Close();
+            websocket.Dispose();
         }
 
         private void keep_open(object sender, ElapsedEventArgs e)

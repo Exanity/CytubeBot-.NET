@@ -1,0 +1,65 @@
+﻿@model CytubeBotWeb.ViewModels.ServerIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+    <p>
+        <h2 class="d-inline-block">Servers</h2>
+        <a asp-action="Create"><i class="fas fa-plus-circle"></i></a>
+    </p>
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <th>
+                @Html.DisplayNameFor(model => model.Servers.FirstOrDefault().Host)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servers.FirstOrDefault().Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servers.FirstOrDefault().Password)
+            </th>
+            <th>@Html.DisplayNameFor(model => model.Servers.FirstOrDefault().Channels)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Servers) {
+        <tr>
+            <td>
+                @{
+                    if (Model.RunningBots.Find(b => (b.Server == item.Host) && (b.Username == item.Username)) == null)
+                    {
+                        <a asp-action="StartServerBot" asp-route-id="@item.Id"><i class="fas fa-play-circle text-success"></i></a>
+                    }
+                    else
+                    {
+                        <a asp-action="StopServerBot" asp-route-id="@item.Id"><i class="fas fa-pause-circle text-danger"></i></a>
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Host)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @(item.Channels == null ? 0 : item.Channels.Count())
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
