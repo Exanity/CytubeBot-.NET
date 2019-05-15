@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
+using CytubeBotCore.Helpers;
 
 namespace CytubeBotCore
 {
@@ -22,6 +25,7 @@ namespace CytubeBotCore
         public WebSocket websocket;
         private Timer KeepAliveTimer;
         private Timer ResetConnectionTimer;
+        private bool Connected = false;
 
         public CytubeBot(string _server, string _channel, string _username, string _password)
         {
@@ -145,40 +149,48 @@ namespace CytubeBotCore
         {
             if (e.Message.Contains($"42[\"setUserRank\",{{\"name\":\"{Username}\""))
             {
+                this.Connected = true;
                 //SendMessage(":sakurahyper:");
             }
-            else if (e.Message.Contains($"42[\"chatMsg\""))
+            if (this.Connected)
             {
-                var ServerMessage = e.Message.Replace("42[\"chatMsg\",", "");
-                ServerMessage = ServerMessage.Substring(0, ServerMessage.Length - 1);
-                dynamic MessageObj = JsonConvert.DeserializeObject(ServerMessage);
-                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                double time = MessageObj.time;
-                origin = origin.AddSeconds(time / 1000).ToLocalTime();
-                string messageString = MessageObj.msg;
-
-                if (messageString.StartsWith("!"))
+                if (e.Message.Contains($"42[\"chatMsg\""))
                 {
-                    var commandName = messageString.Split(" ")[0].Substring(1);
-                    commandName = char.ToUpper(commandName.First()) + commandName.Substring(1).ToLower();
-                    var objectType = Type.GetType($"CytubeBotCore.Commands.{commandName}");
+                    var ServerMessage = e.Message.Replace("42[\"chatMsg\",", "");
+                    ServerMessage = ServerMessage.Substring(0, ServerMessage.Length - 1);
+                    dynamic MessageObj = JsonConvert.DeserializeObject(ServerMessage);
+                    DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    double time = MessageObj.time;
+                    origin = origin.AddSeconds(time / 1000).ToLocalTime();
+                    string messageString = MessageObj.msg;
+                    var youtubeHelper = new Youtube();
 
-                    if (objectType != null)
+                    if (messageString.StartsWith("!"))
                     {
-                        dynamic command = Activator.CreateInstance(objectType);
-                        command.MessageString = e.Message;
-                        command.MessageObject = MessageObj;
-                        command.Username = MessageObj.username.ToString();
-                        command.CytubeBotObject = this;
-                        command.Execute();
+                        var commandName = messageString.Split(" ")[0].Substring(1);
+                        commandName = char.ToUpper(commandName.First()) + commandName.Substring(1).ToLower();
+                        var objectType = Type.GetType($"CytubeBotCore.Commands.{commandName}");
+
+                        if (objectType != null)
+                        {
+                            dynamic command = Activator.CreateInstance(objectType);
+                            command.MessageString = e.Message;
+                            command.MessageObject = MessageObj;
+                            command.Username = MessageObj.username.ToString();
+                            command.CytubeBotObject = this;
+                            command.Execute();
+                        }
                     }
+                    else if (youtubeHelper.YoutubeUrlInString(messageString))
+                    {
+                        SendMessage("Youtube video: " + youtubeHelper.GetTitleFromMessage(messageString));
+                    }
+
+                    var ConsoleMessage = $"[{origin.ToString("HH:mm:ss")}]{MessageObj.username}: {MessageObj.msg}";
+                    Console.WriteLine(ConsoleMessage);
                 }
-
-                var ConsoleMessage = $"[{origin.ToString("HH:mm:ss")}]{MessageObj.username}: {MessageObj.msg}"; 
-                Console.WriteLine(ConsoleMessage);
             }
-
-
+            //Console.WriteLine(e.Message);
         }
 
         private void Emit(string eventName, string jsonObj)
