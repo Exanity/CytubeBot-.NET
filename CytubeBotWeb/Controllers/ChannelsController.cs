@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CytubeBotWeb.Data;
 using CytubeBotWeb.Models;
+using CytubeBotCore;
 
 namespace CytubeBotWeb.Controllers
 {
     public class ChannelsController : Controller
     {
         private readonly ServerDbContext _context;
+        public List<CytubeBot> _runningBots;
 
-        public ChannelsController(ServerDbContext context)
+        public ChannelsController(ServerDbContext context, List<CytubeBot> runningBots)
         {
             _context = context;
+            _runningBots = runningBots;
         }
 
         // GET: Channels
@@ -143,7 +146,16 @@ namespace CytubeBotWeb.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var channelModel = await _context.Channels.FindAsync(id);
+            _context.Entry(channelModel).Reference(channel => channel.Server).Load();
+            var test = channelModel.Server;
             var serverId = channelModel.ServerModelId;
+            var bot = _runningBots.Find(x => (x.Channel == channelModel.ChannelName) && (x.Username == channelModel.Server.Username) && (x.Server == channelModel.Server.Host));
+            if (bot != null)
+            {
+                bot.Disconnect();
+                _runningBots.Remove(bot);
+                bot = null;
+            }
             _context.Channels.Remove(channelModel);
             await _context.SaveChangesAsync();
             return RedirectToAction("Edit", "Servers", new { Id = serverId });
