@@ -183,7 +183,8 @@ namespace CytubeBotCore
                     }
                     else if (youtubeHelper.YoutubeUrlInString(messageString))
                     {
-                        SendMessage("Youtube video: " + youtubeHelper.GetTitleFromMessage(messageString));
+                        string title = youtubeHelper.GetTitleFromMessage(messageString);
+                        SendMessage("Youtube video: " + title);
                     }
 
                     var ConsoleMessage = $"[{origin.ToString("HH:mm:ss")}]{MessageObj.username}: {MessageObj.msg}";
@@ -201,7 +202,8 @@ namespace CytubeBotCore
         
         public void SendMessage(string msg)
         {
-            this.Emit("chatMsg", "{ \"msg\": \""+msg+"\", \"meta\": {}}");
+            var test = HttpUtility.JavaScriptStringEncode(msg);
+            this.Emit("chatMsg", "{ \"msg\": \""+ test+ "\", \"meta\": {}}");
         }
     }
 }
