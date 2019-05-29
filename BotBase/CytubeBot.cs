@@ -25,7 +25,7 @@ namespace CytubeBotCore
         public WebSocket websocket;
         private Timer KeepAliveTimer;
         private Timer ResetConnectionTimer;
-        private bool Connected = false;
+        public bool Connected = false;
 
         public CytubeBot(string _server, string _channel, string _username, string _password)
         {
@@ -33,11 +33,6 @@ namespace CytubeBotCore
             Channel = _channel;
             Username = _username;
             Password = _password;
-        }
-
-        public void Connect()
-        {
-            Console.WriteLine("Starting Connection to Socket.io server...");
 
             websocket = new WebSocket(getSocketURL(new Uri(Server)));
             websocket.Opened += websocket_Opened;
@@ -46,6 +41,12 @@ namespace CytubeBotCore
             websocket.MessageReceived += websocket_MessageReceived;
             websocket.EnableAutoSendPing = true;
             websocket.AutoSendPingInterval = 25;
+        }
+
+        public void Connect()
+        {
+            Console.WriteLine("Starting Connection to Socket.io server...");
+
             websocket.Open();
         }
 
@@ -163,7 +164,6 @@ namespace CytubeBotCore
                     double time = MessageObj.time;
                     origin = origin.AddSeconds(time / 1000).ToLocalTime();
                     string messageString = MessageObj.msg;
-                    var youtubeHelper = new Youtube();
 
                     if (messageString.StartsWith("!"))
                     {
@@ -181,9 +181,9 @@ namespace CytubeBotCore
                             command.Execute();
                         }
                     }
-                    else if (youtubeHelper.YoutubeUrlInString(messageString))
+                    else if (Youtube.YoutubeUrlInString(messageString))
                     {
-                        string title = youtubeHelper.GetTitleFromMessage(messageString);
+                        string title = Youtube.GetTitleFromMessage(messageString);
                         SendMessage("Youtube video: " + title);
                     }
 

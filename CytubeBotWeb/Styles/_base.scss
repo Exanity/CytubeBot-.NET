@@ -1,0 +1,22 @@
+﻿html, body {
+    height: 100%;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.618;
+    letter-spacing: 0.03em;
+}
+
+
+.top-navbar {
+    text-transform: uppercase;
+    letter-spacing: 0.03rem;
+    padding: 1.5rem 3rem !important;
+    box-shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.1), 0 2px 49px 0 rgba(0, 0, 0, 0.06);
+    z-index: 9000;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}

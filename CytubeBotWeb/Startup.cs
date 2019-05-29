@@ -13,6 +13,7 @@ using CytubeBotWeb.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CytubeBotCore;
+using CytubeBotWeb.Helper;
 
 namespace CytubeBotWeb
 {
@@ -21,7 +22,10 @@ namespace CytubeBotWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            StaticConfig = configuration;
         }
+
+        public static IConfiguration StaticConfig { get; private set; }
 
         public IConfiguration Configuration { get; }
 
@@ -72,6 +76,7 @@ namespace CytubeBotWeb
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
 
             app.UseMvc(routes =>
             {

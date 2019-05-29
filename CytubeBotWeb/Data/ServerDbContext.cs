@@ -20,6 +20,7 @@ namespace CytubeBotWeb.Data
 
         public DbSet<ServerModel> Servers { get; set; }
         public DbSet<ChannelModel> Channels { get; set; }
+        public DbSet<CommandLogsModel> CommandLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,11 @@ namespace CytubeBotWeb.Data
             {
                 entity.HasMany(s => s.Channels)
                     .WithOne(c => c.Server);
+            });
+
+            modelBuilder.Entity<CommandLogsModel>(entity => 
+            {
+                entity.HasOne(c => c.Channel);
             });
 
             base.OnModelCreating(modelBuilder);

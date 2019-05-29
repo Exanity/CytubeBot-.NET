@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CytubeBotWeb</title>
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&subset=latin-ext" />
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        
         <script defer src="~/lib/font-awesome/js/all.js"></script>
     </environment>
     <environment exclude="Development">
@@ -18,65 +20,68 @@
     </environment>
 </head>
 <body>
-    <div class="row h-100 no-gutters">
-        <div class="bg-dark col-1 text-light sidemenu">
-            <div class="row flex-column justify-content-between no-gutters h-100">
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="px-0 bg-dark sidebar">
                 <ul class="nav nav-pills flex-column">
                     <li class="logo-nav-item">
                         <a class="navbar-brand" href="/">
                             <h2>CytubeBot</h2>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <h6 class="nav-header nav-link">General</h6>
+                    <li>
+                        <h6 class="nav-header">General</h6>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "dashboard" ? " active" : "")" href="/">
                             <i class="fas fa-tachometer-alt"></i>
-                            Dashboard <span class="sr-only">(current)</span>
+                            Dashboard @if (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "dashboard"){ <span class='sr-only'>(current)</span> }
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "servers" ? " active" : "")" href="/servers">
                             <i class="fas fa-server"></i>
-                            Servers <span class="sr-only">(current)</span>
+                            Servers @if (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "servers"){ <span class='sr-only'>(current)</span> }
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "channels" ? " active" : "")" href="/channels">
+                            <i class="fas fa-server"></i>
+                            Channels @if (ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "channels"){<span class='sr-only'>(current)</span>}
                         </a>
                     </li>
                 </ul>
-                <p class="sidebar-footer">&copy; 2019 - CytubeBotWeb</p>
-            </div>
-        </div>
-        <div class="col">
-            <div class="navbar navbar-expand-lg navbar-light bg-white top-navbar">
-                <div class="m-auto"></div>
-                <div class="collapse navbar-collapse justify-content-end" id="navbar-header-content">
-                    <ul class="navbar-nav ml-5 navbar-profile">
-                        <li class="nav-item dropdown">
-                            <div class="profile-name">
-                                @Context.User.Identity.Name
-                            </div>
-                            @*If i want profile pictures
+            </nav>
+            <div class="right-column">
+                <div class="navbar navbar-expand-lg navbar-light bg-white top-navbar">
+                    <div class="m-auto"></div>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbar-header-content">
+                        <ul class="navbar-nav ml-5 navbar-profile">
+                            <li class="nav-item dropdown">
+                                <div class="profile-name">
+                                    @Context.User.Identity.Name
+                                </div>
+                                @*If i want profile pictures
                                 <div class="profile-picture bg-gradient bg-primary has-message float-right">
                                     <img src="assets/img/profile-pic.jpg" width="44" height="44">
                                 </div>
-                            *@
-                            <form class="form-inline justify-content-end" asp-area="Identity" asp-page="/Account/Logout"
-                                  asp-route-returnUrl="@Url.Page("/", new { area = "" })"
-                                  method="post">
-                                <button type="submit" class="nav-link p-0 btn btn-link text-dark float-right">Logout</button>
-                            </form>
-                        </li>
-                    </ul>
+                                *@
+                                <form class="form-inline justify-content-end" asp-area="Identity" asp-page="/Account/Logout"
+                                      asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                                      method="post">
+                                    <button type="submit" class="nav-link p-0 btn btn-link text-dark float-right">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="container-fluid body-content">
-                @RenderBody()
-                <footer>
-                </footer>
+                <main class="main-content p-5">
+                    @RenderBody()
+                    <footer></footer>
+                </main>
             </div>
         </div>
     </div>
-
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

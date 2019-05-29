@@ -180,6 +180,7 @@ namespace CytubeBotWeb.Controllers
                     if (bot == null)
                     {
                         CytubeBot cytubebot = new CytubeBot(serverModel.Host, channel.ChannelName, serverModel.Username, serverModel.Password);
+                        cytubebot.websocket.MessageReceived += new CytubeBotWeb.Helper.CytubeBotCoreHelper(channel, cytubebot).websocket_MessageReceivedLog;
                         cytubebot.Connect();
                         _runningBots.Add(cytubebot);
                     }

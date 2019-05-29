@@ -4,14 +4,16 @@ using CytubeBotWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CytubeBotWeb.Migrations.ServerDb
 {
     [DbContext(typeof(ServerDbContext))]
-    partial class ServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520203315_AddDateTimeFieldToCommandLogs")]
+    partial class AddDateTimeFieldToCommandLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,8 +44,6 @@ namespace CytubeBotWeb.Migrations.ServerDb
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChannelModelId");
-
                     b.Property<string>("Command");
 
                     b.Property<string>("Message");
@@ -53,8 +53,6 @@ namespace CytubeBotWeb.Migrations.ServerDb
                     b.Property<string>("User");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChannelModelId");
 
                     b.ToTable("CommandLogs");
                 });
@@ -81,14 +79,6 @@ namespace CytubeBotWeb.Migrations.ServerDb
                     b.HasOne("CytubeBotWeb.Models.ServerModel", "Server")
                         .WithMany("Channels")
                         .HasForeignKey("ServerModelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CytubeBotWeb.Models.CommandLogsModel", b =>
-                {
-                    b.HasOne("CytubeBotWeb.Models.ChannelModel", "channel")
-                        .WithMany()
-                        .HasForeignKey("ChannelModelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

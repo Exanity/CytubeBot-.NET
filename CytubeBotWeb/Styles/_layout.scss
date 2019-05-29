@@ -1,0 +1,105 @@
+﻿
+// Cards
+.card {
+    &:not([class*="card-outline-"]) {
+        border: 0;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+    }
+
+    &.card-xs {
+        height: 95px;
+        overflow: hidden;
+    }
+
+    .card-body {
+        font-weight: 400;
+
+        .bg-gradient & {
+            color: #FFFFFF !important;
+        }
+
+        .tile-left {
+            position: absolute;
+        }
+
+        .tile-right {
+            text-align: right;
+            line-height: 1.618;
+
+            .tile-number {
+                font-size: 2rem;
+                font-weight: 400;
+            }
+        }
+    }
+}
+
+
+// Sidebar
+.sidebar {
+    color: #FFFFFF;
+    background-color: #122f3b;
+    width: 225px;
+    position: fixed;
+    z-index: 9001;
+    left: -240px;
+    box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.12), 2px 0 15px 0 rgba(0, 0, 0, 0.09);
+    height: 100%;
+
+    @media(min-width: 992px) {
+        left: 0;
+    }
+
+    .nav {
+        a.navbar-brand {
+            margin: 1rem 0 0 0;
+            padding: 1rem 2rem;
+            color: #FFFFFF;
+        }
+
+        .nav-header {
+            color: #FFFFFF;
+            text-transform: uppercase;
+            padding: 0.5rem 2rem;
+            margin: 2rem 0 0 0;
+        }
+
+        .nav-item {
+            .nav-link {
+                border-radius: 0;
+                padding: 1rem 2rem;
+                color: #FFFFFF;
+
+                &:hover, &.active {
+                    @extend .bg-gradient;
+                }
+            }
+        }
+    }
+}
+
+//Right Column
+.right-column {
+    width: 100%;
+    -webkit-transition: margin-left 0.225s ease-in-out !important;
+    -moz-transition: margin-left 0.225s ease-in-out !important;
+    -o-transition: margin-left 0.225s ease-in-out !important;
+    transition: margin-left 0.225s ease-in-out !important;
+    margin-left: 0;
+
+    @media(min-width: 992px) {
+        margin-left: 225px;
+    }
+}
+//BG
+.bg-gradient {
+    color: #FFFFFF !important;
+    background: linear-gradient(135deg, #bcce60 0%, #32dac3 100%);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: linear-gradient(135deg, #bcce60 0%, rgb(50, 218, 195) 100%);
+    transition: opacity 0.2s ease-out;
+}
+
+.bg-dark {
+    background-color: #122f3b !important;
+}

@@ -7,17 +7,17 @@ using System.Web;
 
 namespace CytubeBotCore.Helpers
 {
-    class Youtube
+    static public class Youtube
     {
         private static readonly Regex regexUrl = new Regex(@"(?<=href=\"")((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)(?=\"")");
         private static readonly Regex regexId = new Regex(@"(?:youtu.be\/|v\/|embed\/|watch\?v=)([^#&?]*)");
 
-        public bool YoutubeUrlInString(string text)
+        public static bool YoutubeUrlInString(string text)
         {
             return regexUrl.IsMatch(text);
         }
 
-        public string GetTitleFromMessage(string messageString)
+        public static string GetTitleFromMessage(string messageString)
         {
             string name = "";
             if (YoutubeUrlInString(messageString))

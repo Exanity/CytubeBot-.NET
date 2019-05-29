@@ -1,9 +1,41 @@
-﻿@{
+﻿@model CytubeBotWeb.ViewModels.DashboardIndexViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="row">
-    <div class="col">
-        
+    <div class="col-md-6 col-lg-6 col-xl-3 mb-5">
+        <div class="card card-tile card-xs bg-primary bg-gradient text-center">
+            <div class="card-body p-4">
+                <div class="tile-left">
+                    <i class="fas fa-terminal fa-5x"></i>
+                </div>
+                <div class="tile-right">
+                    <div class="tile-number">@Model.CommandLogs.Count</div>
+                    <div class="tile-description">Commands Called</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-lg-6 col-xl-3 mb-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Called</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Command in Model.CommandLogs.GroupBy(c => c.Command).OrderByDescending(c => c.Count())){
+                <tr>
+                    <td>@Command.Key</td>
+                    <td>@Command.Count()</td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
