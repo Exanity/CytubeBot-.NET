@@ -19,40 +19,6 @@ namespace CytubeBotWeb.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CytubeBotWeb.Models.ChannelModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ChannelName");
-
-                    b.Property<int>("ServerModelId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServerModelId");
-
-                    b.ToTable("Channels");
-                });
-
-            modelBuilder.Entity("CytubeBotWeb.Models.ServerModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Host");
-
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Username");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Servers");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -216,14 +182,6 @@ namespace CytubeBotWeb.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("CytubeBotWeb.Models.ChannelModel", b =>
-                {
-                    b.HasOne("CytubeBotWeb.Models.ServerModel", "Server")
-                        .WithMany("Channels")
-                        .HasForeignKey("ServerModelId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

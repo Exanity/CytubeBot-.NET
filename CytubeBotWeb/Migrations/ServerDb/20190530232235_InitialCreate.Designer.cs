@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CytubeBotWeb.Migrations.ServerDb
 {
     [DbContext(typeof(ServerDbContext))]
-    [Migration("20190527190044_AddChannelToCommandLogs")]
-    partial class AddChannelToCommandLogs
+    [Migration("20190530232235_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,7 +88,7 @@ namespace CytubeBotWeb.Migrations.ServerDb
 
             modelBuilder.Entity("CytubeBotWeb.Models.CommandLogsModel", b =>
                 {
-                    b.HasOne("CytubeBotWeb.Models.ChannelModel", "channel")
+                    b.HasOne("CytubeBotWeb.Models.ChannelModel", "Channel")
                         .WithMany()
                         .HasForeignKey("ChannelModelId")
                         .OnDelete(DeleteBehavior.Cascade);

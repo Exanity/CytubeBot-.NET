@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CytubeBotWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190512033915_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20190530232421_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,40 +20,6 @@ namespace CytubeBotWeb.Migrations
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CytubeBotWeb.Models.ChannelModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ChannelName");
-
-                    b.Property<int>("ServerModelId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServerModelId");
-
-                    b.ToTable("Channels");
-                });
-
-            modelBuilder.Entity("CytubeBotWeb.Models.ServerModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Host");
-
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Username");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Servers");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -218,14 +184,6 @@ namespace CytubeBotWeb.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("CytubeBotWeb.Models.ChannelModel", b =>
-                {
-                    b.HasOne("CytubeBotWeb.Models.ServerModel", "Server")
-                        .WithMany("Channels")
-                        .HasForeignKey("ServerModelId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -34,6 +34,11 @@ namespace CytubeBotCore
             Username = _username;
             Password = _password;
 
+            BuildWebsocketObject();
+        }
+
+        public void BuildWebsocketObject()
+        {
             websocket = new WebSocket(getSocketURL(new Uri(Server)));
             websocket.Opened += websocket_Opened;
             websocket.Error += websocket_Error;
@@ -151,8 +156,15 @@ namespace CytubeBotCore
             if (e.Message.Contains($"42[\"setUserRank\",{{\"name\":\"{Username}\""))
             {
                 this.Connected = true;
-                //SendMessage(":sakurahyper:");
             }
+            // Remove this if you don't want the bot to reconnect on kick
+            else if (e.Message.Contains($"42[\"kick\""))
+            {
+                this.Disconnect();
+                BuildWebsocketObject();
+                this.Connect();
+            }
+
             if (this.Connected)
             {
                 if (e.Message.Contains($"42[\"chatMsg\""))

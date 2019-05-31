@@ -86,7 +86,7 @@ namespace CytubeBotWeb.Migrations.ServerDb
 
             modelBuilder.Entity("CytubeBotWeb.Models.CommandLogsModel", b =>
                 {
-                    b.HasOne("CytubeBotWeb.Models.ChannelModel", "channel")
+                    b.HasOne("CytubeBotWeb.Models.ChannelModel", "Channel")
                         .WithMany()
                         .HasForeignKey("ChannelModelId")
                         .OnDelete(DeleteBehavior.Cascade);
